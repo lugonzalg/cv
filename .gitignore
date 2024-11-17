@@ -1,0 +1,12 @@
+# Core
+
+.env
+
+# Certbot
+
+ikerketa.com.conf
+
+# Yew dependencies
+
+*.o
+target
