@@ -1,11 +1,4 @@
 services:
-  yew:
-    build: frontend-rust
-    volumes:
-      - ./frontend-rust:/app
-    ports:
-      - 8080:8080
-    entrypoint: tail -f
   frontend:
     image: nginx:latest
     container_name: frontend
