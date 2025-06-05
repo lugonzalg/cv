@@ -12,6 +12,21 @@ services:
       - webnet
     expose:
       - 8000
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/app
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: app
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - webnet
 
   nginx:
     image: nginx:mainline-alpine3.20-slim
@@ -43,3 +58,6 @@ services:
     restart: unless-stopped
 networks:
   webnet:
+
+volumes:
+  db-data:

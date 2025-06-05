@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from .routes import projects
+from .database import Base, engine
+
 app = FastAPI()
 
 app.add_middleware(
@@ -11,23 +14,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-projects = [
-    {
-        "id": 1,
-        "name": "Project One",
-        "description": "First mock project description.",
-        "skills": ["Vue", "Node", "Docker"],
-        "repo": "https://github.com/example/project-one",
-    },
-    {
-        "id": 2,
-        "name": "Project Two",
-        "description": "Second mock project description.",
-        "skills": ["Python", "Flask"],
-        "repo": "https://github.com/example/project-two",
-    },
-]
+@app.on_event("startup")
+async def on_startup():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
-@app.get("/api/projects")
-async def get_projects():
-    return projects
+app.include_router(projects.router)
