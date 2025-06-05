@@ -1,9 +1,7 @@
 services:
   frontend:
-    image: nginx:latest
+    build: ./frontend
     container_name: frontend
-    volumes:
-      - ./frontend:/usr/share/nginx/html:ro
     networks:
       - webnet
 
