@@ -1,5 +1,5 @@
-from .app_project import AppProject
+from .app_project_model import AppProjectModel
 
 __all__ = [
-    app_project
+    AppProjectModel
 ]

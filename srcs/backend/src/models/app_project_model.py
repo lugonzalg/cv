@@ -1,8 +1,9 @@
 from sqlalchemy import Column, Integer, String, Text
-from ..data.database import Base
+from pydantic import BaseModel
+from ..data.database import Database
 
-class AppProject(Base):
-    __tablename__ = "app_projects"
+class AppProjectModel(Database.Base):
+    __tablename__ = "app_project"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
