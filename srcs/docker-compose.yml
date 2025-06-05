@@ -5,6 +5,12 @@ services:
     networks:
       - webnet
 
+  backend:
+    build: ./backend
+    container_name: backend
+    networks:
+      - webnet
+
   nginx:
     image: nginx:mainline-alpine3.20-slim
     ports:
