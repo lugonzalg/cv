@@ -2,6 +2,8 @@ services:
   frontend:
     build: ./frontend
     container_name: frontend
+    ports:
+      - 80:80
     networks:
       - webnet
 
@@ -10,21 +12,24 @@ services:
     container_name: backend
     networks:
       - webnet
-    expose:
-      - 8000
+    ports:
+      - 8000:8000
     environment:
-      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/app
+      - DB_USER=${DB_USER}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_PASSWORD=${DB_PASSWORD}
     depends_on:
-      - db
+      - postgres
 
-  db:
+  postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: app
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     networks:
       - webnet
 
@@ -60,4 +65,4 @@ networks:
   webnet:
 
 volumes:
-  db-data:
+  postgres-data:

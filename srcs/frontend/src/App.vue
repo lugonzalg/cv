@@ -14,7 +14,6 @@
           <h3>{{ post.title }}</h3>
           <p>{{ post.body }}</p>
         </article>
-
         <section class="projects">
           <h3>Projects</h3>
           <ul>

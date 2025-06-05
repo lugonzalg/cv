@@ -1,14 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routes import (
+from backend.router.routes import (
     list_app_projects_router,
     create_app_project_router,
     get_app_project_router,
     update_app_project_router,
     delete_app_project_router,
 )
-from .data.database import Database
+from backend.data.database import Database
 
 app = FastAPI()
 
