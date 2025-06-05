@@ -7,7 +7,7 @@ from pydantic import BaseModel
 # Will have an initialize method to start the connection
 # and start the models
 
-class AppRepos(BaseModel):
+class AppRepoModel(BaseModel):
     name: str
     description: str
     skills: list[str]

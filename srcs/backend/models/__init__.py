@@ -1,5 +1,5 @@
-from .app_repo import AppRepo
+from .app_repo import AppRepoModel
 
 __all__ = [
-    AppRepo
+    AppRepoModel
 ]
