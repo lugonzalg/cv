@@ -1,11 +1,17 @@
 services:
   frontend:
-    image: nginx:latest
+    build: ./frontend
     container_name: frontend
-    volumes:
-      - ./frontend:/usr/share/nginx/html:ro
     networks:
       - webnet
+
+  backend:
+    build: ./backend
+    container_name: backend
+    networks:
+      - webnet
+    expose:
+      - 8000
 
   nginx:
     image: nginx:mainline-alpine3.20-slim
