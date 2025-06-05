@@ -11,6 +11,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# This file will just have the app lifespan
+# use the latest FastApi documentation to know how to do this
+
 projects = [
     {
         "id": 1,
