@@ -1,11 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from ..models import Project
+from backend.models import Project
 
-class AppRepo:
-    def __init__(self, session: AsyncSession):
-        self.session = session
+class AppProjectRepo:
 
-    async def list_projects(self):
+    @staticmethod
+    async def list_projects(self) -> list[AppProject]:
         result = await self.session.execute(select(Project))
         return result.scalars().all()
