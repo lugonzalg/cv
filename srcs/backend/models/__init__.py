@@ -1,11 +1,5 @@
-from sqlalchemy import Column, Integer, String, Text
-from ..data.database import Base
+from .app_project import AppProject
 
-class Project(Base):
-    __tablename__ = "projects"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
-    description = Column(Text)
-    skills = Column(String)
-    repo = Column(String)
+__all__ = [
+    app_project
+]
