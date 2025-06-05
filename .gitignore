@@ -11,3 +11,5 @@ certbot
 
 *.o
 target
+__pycache__/
+*.db
