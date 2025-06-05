@@ -1,44 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LinkedIn Style CV</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div id="app">
-        <header>
-            <div class="logo">My LinkedIn</div>
-            <nav>
-                <a href="#">Home</a>
-                <a href="#">My Network</a>
-                <a href="#">Jobs</a>
-                <a href="#">Messaging</a>
-                <a href="#">Notifications</a>
-            </nav>
-        </header>
-        <div class="container">
-            <aside class="sidebar-left">
-                <img :src="profileImage" alt="Profile" class="profile">
-                <h2>{{ name }}</h2>
-                <p>{{ headline }}</p>
-            </aside>
-            <main class="feed">
-                <div v-for="post in posts" class="post" :key="post.title">
-                    <h3>{{ post.title }}</h3>
-                    <p>{{ post.body }}</p>
-                </div>
-            </main>
-            <aside class="sidebar-right">
-                <h3>Trending</h3>
-                <ul>
-                    <li v-for="topic in trending" :key="topic">{{ topic }}</li>
-                </ul>
-            </aside>
-        </div>
-    </div>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-    <script src="app.js"></script>
-</body>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
 </html>
