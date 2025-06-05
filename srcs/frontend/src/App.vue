@@ -14,6 +14,18 @@
           <h3>{{ post.title }}</h3>
           <p>{{ post.body }}</p>
         </article>
+        <section class="projects">
+          <h3>Projects</h3>
+          <ul>
+            <li v-for="proj in projects" :key="proj.id">
+              <h4>
+                <a :href="proj.repo" target="_blank">{{ proj.name }}</a>
+              </h4>
+              <p>{{ proj.description }}</p>
+              <small>Skills: {{ proj.skills.join(', ') }}</small>
+            </li>
+          </ul>
+        </section>
       </main>
       <aside class="sidebar-right">
         <h3>Trending</h3>
@@ -26,7 +38,19 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+
+const projects = ref([]);
+onMounted(async () => {
+  try {
+    const res = await fetch('/api/projects');
+    if (res.ok) {
+      projects.value = await res.json();
+    }
+  } catch (e) {
+    console.error('Failed fetching projects', e);
+  }
+});
 
 const name = ref('Your Name');
 const headline = ref('Brief description or headline.');
@@ -73,6 +97,9 @@ const trending = ref(['Topic 1', 'Topic 2', 'Topic 3']);
   background-color: white;
   padding: 1rem;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+.projects li {
+  margin-bottom: 1rem;
 }
 .post {
   margin-bottom: 1rem;
