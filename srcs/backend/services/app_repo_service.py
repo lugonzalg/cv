@@ -1,4 +1,9 @@
-# This static class with staticmethod will permorm the operations
-# for the AppRepoModel class
+from ..repositories.app_repo import AppRepo
+
 class AppRepoService:
-    pass
+    def __init__(self, repo: AppRepo):
+        self.repo = repo
+
+    async def get_projects(self):
+        return await self.repo.list_projects()
+

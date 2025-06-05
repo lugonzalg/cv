@@ -1,5 +1,11 @@
-from .app_repo import AppRepoModel
+from sqlalchemy import Column, Integer, String, Text
+from ..data.database import Base
 
-__all__ = [
-    AppRepoModel
-]
+class Project(Base):
+    __tablename__ = "projects"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    description = Column(Text)
+    skills = Column(String)
+    repo = Column(String)
