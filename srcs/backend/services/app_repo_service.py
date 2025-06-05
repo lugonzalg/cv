@@ -6,3 +6,4 @@ class AppRepoService:
 
     async def get_projects(self):
         return await self.repo.list_projects()
+

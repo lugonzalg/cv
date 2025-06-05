@@ -28,6 +28,14 @@ services:
     networks:
       - webnet
 
+  backend:
+    build: ./backend
+    container_name: backend
+    networks:
+      - webnet
+    ports:
+      - 8000:8000
+
   nginx:
     image: nginx:mainline-alpine3.20-slim
     ports:

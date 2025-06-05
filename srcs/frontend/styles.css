@@ -1,0 +1,66 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background-color: #f3f2ef;
+}
+
+header {
+  background-color: #283e4a;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  height: 56px;
+}
+
+header .logo {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-right: auto;
+}
+
+header nav a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+  font-size: 0.95em;
+}
+
+.container {
+  display: flex;
+  margin: 20px;
+}
+
+.sidebar-left, .sidebar-right {
+  width: 25%;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+
+.sidebar-left {
+  margin-right: 20px;
+}
+
+.sidebar-right {
+  margin-left: 20px;
+}
+
+.feed {
+  flex: 1;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+
+.post {
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.profile {
+  width: 100%;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
