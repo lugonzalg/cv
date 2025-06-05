@@ -2,6 +2,8 @@ services:
   frontend:
     build: ./frontend
     container_name: frontend
+    ports:
+      - 80:80
     networks:
       - webnet
 
@@ -10,8 +12,8 @@ services:
     container_name: backend
     networks:
       - webnet
-    expose:
-      - 8000
+    ports:
+      - 8000:8000
 
   nginx:
     image: nginx:mainline-alpine3.20-slim
