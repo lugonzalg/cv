@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routes import projects
-from .data.database import Base, engine
+from backend.router.routes import ListProjectsRoute
+from backend.data.database import Base, engine
 
 app = FastAPI()
 
@@ -19,4 +19,4 @@ async def on_startup():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-app.include_router(projects.router)
+app.include_router(ListProjectsRoute.router)
