@@ -1,12 +1,9 @@
-from sqlalchemy import Column, Integer, String, Text
-from ..data.database import Database
+from sqlmodel import SQLModel, Field
 
 
-class AppProjectModel(Database.Base):
-    __tablename__ = "app_project"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
-    description = Column(Text)
-    skills = Column(String)
-    repo = Column(String)
+class AppProjectModel(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    name: str
+    description: str
+    skills: str
+    repo: str
