@@ -1,0 +1,13 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN apt update \
+    && apt install -y \
+        git \
+        git-flow \
+    && pip install uv pre-commit
+
+RUN adduser --disabled-password --gecos "" user
+
+USER user
