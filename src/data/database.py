@@ -18,10 +18,10 @@ class Database:
         async with Database.SessionLocal() as session:
             yield session
 
+    @staticmethod
+    async def get_session() -> AsyncSession:
+        async with Database.session() as session:
+            yield session
+
 
 Base = Database.Base
-
-
-async def get_session() -> AsyncSession:
-    async with Database.session() as session:
-        yield session
