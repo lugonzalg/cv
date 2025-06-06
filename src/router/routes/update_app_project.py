@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.data import Database
 from src.repositories import AppProjectRepo
-from src.models import AppProjectModel
+from src.models import AppProjectDTO
 
 
 class UpdateAppProjectRoute:
@@ -11,10 +11,10 @@ class UpdateAppProjectRoute:
     router = APIRouter()
 
     @staticmethod
-    @router.put("/projects/{project_id}", response_model=AppProjectModel)
+    @router.put("/projects/{project_id}", response_model=AppProjectDTO)
     async def handle(
         project_id: int,
-        app_project: AppProjectModel,
+        app_project: AppProjectDTO,
         session: AsyncSession = Depends(Database.get_session),
     ):
         project = await AppProjectRepo.update_project(
