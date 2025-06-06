@@ -1,13 +1,17 @@
-from backend.router.routes import (
+from .routes import (
+    CreateAppProjectRoute,
     ListAppProjectsRoute,
-    CreateAppProjecRoute,
     GetAppProjectRoute,
     UpdateAppProjectRoute,
     DeleteAppProjectRoute,
 )
 
-app.include_router(ListAppProjectsRoute.router)
-app.include_router(CreateAppProjecRoute.router)
-app.include_router(GetAppProjectRoute.route)
-app.include_router(UpdateAppProjectRoute.route)
-app.include_router(DeleteAppProjectRoute.route)
+from fastapi import APIRouter
+
+router = APIRouter()
+
+router.include_router(ListAppProjectsRoute.router)
+router.include_router(CreateAppProjectRoute.router)
+router.include_router(GetAppProjectRoute.router)
+router.include_router(UpdateAppProjectRoute.router)
+router.include_router(DeleteAppProjectRoute.router)

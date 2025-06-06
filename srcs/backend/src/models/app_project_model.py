@@ -1,12 +1,28 @@
-from sqlalchemy import Column, Integer, String, Text
-from pydantic import BaseModel
-from ..data.database import Database
+from .base import Base
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import String
 
-class AppProjectModel(Database.Base):
+from pydantic import BaseModel
+
+
+class AppProjectModel(Base):
     __tablename__ = "app_project"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
-    description = Column(Text)
-    skills = Column(String)
-    repo = Column(String)
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(30), unique=True)
+    description: Mapped[str] = mapped_column(nullable=False)
+    skills: Mapped[str] = mapped_column(nullable=False)
+    repo: Mapped[str] = mapped_column(nullable=False, unique=True)
+
+    def __repr__(self) -> str:
+        return f"AppProjectModel(name={self.name}, skills={self.skills})"
+
+
+class AppProjectDTO(BaseModel):
+    name: str
+    description: str
+    skills: str
+    repo: str
+
+    def __repr__(self) -> str:
+        return f"AppProjectDTO(name={self.name}, skills={self.skills})"

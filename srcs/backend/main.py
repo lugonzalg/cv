@@ -1,9 +1,22 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.data import Database
+from src.data import Database
+from src.router import app_router
+from src.settings import AppSettings
 
-app = FastAPI()
+
+async def lifespan(app: FastAPI):
+    app.state.settings = AppSettings()
+
+    await Database.initialize(
+        app.state.settings.DB_URL,
+    )
+
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -13,7 +26,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.on_event("startup")
-async def on_startup():
-    async with Database.engine.begin() as conn:
-        await conn.run_sync(Database.Base.metadata.create_all)
+app.include_router(app_router.router)

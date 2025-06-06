@@ -1,27 +1,49 @@
-import os
 from contextlib import asynccontextmanager
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.ext.asyncio import (
+    create_async_engine,
+    async_sessionmaker,
+    AsyncSession,
+    AsyncEngine,
+)
+
+from typing import Optional, Any
+from pydantic_core import MultiHostUrl
+from src.models import Base
 
 
 class Database:
     """Database helper exposing an async session context manager."""
 
-    DATABASE_URL = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///./test.db")
-    engine = create_async_engine(DATABASE_URL, echo=False)
-    SessionLocal = async_sessionmaker(engine, expire_on_commit=False)
-    Base = declarative_base()
+    engine: Optional[AsyncEngine] = None
+    base: Optional[Any] = None
 
-    @staticmethod
+    @classmethod
+    async def initialize(
+        cls,
+        url: MultiHostUrl,
+    ) -> None:
+        """Initialize the database with the provided URL."""
+
+        if not url:
+            raise ValueError("Invalid database URL provided.")
+
+        if not isinstance(url, MultiHostUrl):
+            raise TypeError("Database URL must be of type MultiHostUrl.")
+
+        cls.engine = create_async_engine(str(url), echo=False)
+        cls.SessionLocal = async_sessionmaker(cls.engine, expire_on_commit=False)
+
+        async with cls.engine.begin() as conn:
+            # Create all tables in the database
+            await conn.run_sync(Base.metadata.create_all)
+
+    @classmethod
     @asynccontextmanager
-    async def session() -> AsyncSession:
-        async with Database.SessionLocal() as session:
+    async def session(cls) -> AsyncSession:
+        async with cls.SessionLocal() as session:
             yield session
 
-
-Base = Database.Base
-
-
-async def get_session() -> AsyncSession:
-    async with Database.session() as session:
-        yield session
+    @classmethod
+    async def get_session(cls) -> AsyncSession:
+        async with cls.session() as session:
+            yield session

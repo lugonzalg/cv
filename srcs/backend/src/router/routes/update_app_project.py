@@ -1,22 +1,23 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from backend.data import get_session
-from backend.services import AppRepoService
-from backend.models import AppProject
+from src.data import Database
+from src.repositories import AppProjectRepo
+from src.models import AppProjectDTO
 
 
-class UpdateAppProject:
+class UpdateAppProjectRoute:
     """Handle updating a project"""
+
     router = APIRouter()
 
     @staticmethod
-    @router.put("/projects/{project_id}", response_model=AppProject)
+    @router.put("/projects/{project_id}", response_model=AppProjectDTO)
     async def handle(
         project_id: int,
-        app_project: AppProject,
-        session: AsyncSession = Depends(get_session),
+        app_project: AppProjectDTO,
+        session: AsyncSession = Depends(Database.get_session),
     ):
-        project = await AppRepoService.update_project(
+        project = await AppProjectRepo.update_project(
             session,
             project_id,
             {k: v for k, v in app_project.model_dump().items() if v is not None},

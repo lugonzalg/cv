@@ -7,13 +7,9 @@ services:
     networks:
       - webnet
 
-  backend-dev:
-    build:
-     context: ./backend
-     dockerfile: ./Dockerfile-dev
-    container_name: backend-dev
-    volumes:
-     - ./backend:/app
+  backend:
+    build: ./backend
+    container_name: backend
     networks:
       - webnet
     ports:
@@ -23,12 +19,8 @@ services:
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
       - DB_PASSWORD=${DB_PASSWORD}
-      - DB_SCHEME=${DB_SCHEME}
-      - DB_NAME=${DB_NAME}
     depends_on:
       - postgres
-    stdin_open: true
-    tty: true
 
   postgres:
     image: postgres:16-alpine

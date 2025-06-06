@@ -1,9 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from backend.models import AppProjectModel
+from src.models import AppProjectModel
 
 
-class AppRepo:
+class AppProjectRepo:
     """Repository with static CRUD operations for :class:`Project`."""
 
     @staticmethod
@@ -12,18 +12,24 @@ class AppRepo:
         return result.scalars().all()
 
     @staticmethod
-    async def create_project(session: AsyncSession, project: AppProjectModel) -> AppProjectModel:
+    async def create_project(
+        session: AsyncSession, project: AppProjectModel
+    ) -> AppProjectModel:
         session.add(project)
         await session.commit()
         await session.refresh(project)
         return project
 
     @staticmethod
-    async def get_project(session: AsyncSession, project_id: int) -> AppProjectModel | None:
+    async def get_project(
+        session: AsyncSession, project_id: int
+    ) -> AppProjectModel | None:
         return await session.get(AppProjectModel, project_id)
 
     @staticmethod
-    async def update_project(session: AsyncSession, project_id: int, data: dict) -> AppProjectModel | None:
+    async def update_project(
+        session: AsyncSession, project_id: int, data: dict
+    ) -> AppProjectModel | None:
         project = await session.get(AppProjectModel, project_id)
         if not project:
             return None
