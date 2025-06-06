@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text
-from pydantic import BaseModel
 from ..data.database import Database
+
 
 class AppProjectModel(Database.Base):
     __tablename__ = "app_project"
