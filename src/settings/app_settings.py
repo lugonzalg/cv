@@ -7,23 +7,26 @@ from typing_extensions import Self
 
 
 class AppSettings(BaseSettings):
+    # Database settings
     DB_SCHEME: str
-    DB_USERNAME: str
+    DB_USER: str
     DB_PASSWORD: str
     DB_HOST: str
     DB_PORT: int
     DB_NAME: str
+
+    # ENVIRONMENT: str
 
     @computed_field
     @property
     def DB_URL(self) -> MultiHostUrl:
         return MultiHostUrl.build(
             scheme=self.DB_SCHEME,
-            username=self.DB_USERNAME,
+            username=self.DB_USER,
             password=self.DB_PASSWORD,
             host=self.DB_HOST,
             port=self.DB_PORT,
-            name=self.DB_NAME,
+            path=self.DB_NAME,
         )
 
     def _check_default_secret(self, var_name: str, value: str | None) -> None:
