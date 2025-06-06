@@ -1,16 +1,16 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from backend.data import get_session
-from backend.services import AppRepoService
-from backend.models import AppProject
+from src.data import Database
+from src.repositories import AppProjectRepo
+from src.models import AppProjectModel
 
 
-class ListAppProjects:
+class ListAppProjectsRoute:
     """Handle listing projects"""
 
     router = APIRouter()
 
     @staticmethod
-    @router.get("/projects", response_model=list[AppProject])
-    async def handle(session: AsyncSession = Depends(get_session)):
-        return await AppRepoService.get_projects(session)
+    @router.get("/projects", response_model=list[AppProjectModel])
+    async def handle(session: AsyncSession = Depends(Database.get_session)):
+        return await AppProjectRepo.get_project(session)
