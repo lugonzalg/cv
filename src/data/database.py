@@ -5,11 +5,10 @@ from sqlalchemy.ext.asyncio import (
     AsyncSession,
     AsyncEngine,
 )
-from sqlalchemy.orm import declarative_base
 
 from typing import Optional, Any
 from pydantic_core import MultiHostUrl
-from sqlmodel import SQLModel
+from src.models import Base
 
 
 class Database:
@@ -19,7 +18,10 @@ class Database:
     base: Optional[Any] = None
 
     @classmethod
-    async def initialize(cls, url: MultiHostUrl) -> None:
+    async def initialize(
+        cls,
+        url: MultiHostUrl,
+    ) -> None:
         """Initialize the database with the provided URL."""
 
         if not url:
@@ -28,12 +30,12 @@ class Database:
         if not isinstance(url, MultiHostUrl):
             raise TypeError("Database URL must be of type MultiHostUrl.")
 
-        cls.engine = create_async_engine(url, echo=False)
-        cls.engine = create_async_engine(url, echo=False)
+        cls.engine = create_async_engine(str(url), echo=False)
         cls.SessionLocal = async_sessionmaker(cls.engine, expire_on_commit=False)
-        cls.Base = declarative_base()
 
-        SQLModel.metadata.create_all(cls.engine)
+        async with cls.engine.begin() as conn:
+            # Create all tables in the database
+            await conn.run_sync(Base.metadata.create_all)
 
     @classmethod
     @asynccontextmanager

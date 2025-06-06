@@ -9,7 +9,9 @@ from src.settings import AppSettings
 async def lifespan(app: FastAPI):
     app.state.settings = AppSettings()
 
-    await Database.initialize(app.state.settings.DB_URL)
+    await Database.initialize(
+        app.state.settings.DB_URL,
+    )
 
     yield
 
