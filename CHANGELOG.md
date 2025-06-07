@@ -19,3 +19,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Integrated build process for Rust-based frontend application using Yew.
 - Docker Compose configuration for multi-container orchestration.
 - Initial deployment scripts and example files for hosting the CV site on a production server.
+- AppSettings [8-add-get-projects]
+- AppProjectDTO [8-add-get-projects]
+- CreateAppProjectController

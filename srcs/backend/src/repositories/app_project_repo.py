@@ -13,7 +13,8 @@ class AppProjectRepo:
 
     @staticmethod
     async def create_project(
-        session: AsyncSession, project: AppProjectModel
+        session: AsyncSession,
+        project: AppProjectModel,
     ) -> AppProjectModel:
         session.add(project)
         await session.commit()
