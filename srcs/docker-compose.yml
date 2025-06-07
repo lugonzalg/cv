@@ -13,7 +13,7 @@ services:
      dockerfile: ./Dockerfile-dev
     container_name: backend-dev
     volumes:
-     - ./backend:/app
+      - ..:/app
     networks:
       - webnet
     ports:
