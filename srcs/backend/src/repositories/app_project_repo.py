@@ -1,10 +1,14 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, update
 from src.models import AppProjectModel
-
+from sqlalchemy import delete
 
 class AppProjectRepo:
     """Repository with static CRUD operations for :class:`Project`."""
+
+    def model_factory(*args, **kwargs) -> AppProjectModel:
+        """Create a new instance of AppProjectModel with given attributes."""
+        return AppProjectModel(**kwargs)
 
     @staticmethod
     async def list_projects(session: AsyncSession):
@@ -34,6 +38,7 @@ class AppProjectRepo:
         project = await session.get(AppProjectModel, project_id)
         if not project:
             return None
+
         for key, value in data.items():
             setattr(project, key, value)
         await session.commit()
@@ -42,9 +47,6 @@ class AppProjectRepo:
 
     @staticmethod
     async def delete_project(session: AsyncSession, project_id: int) -> bool:
-        project = await session.get(AppProjectModel, project_id)
-        if not project:
-            return False
-        await session.delete(project)
+        deleted_app_project = delete(AppProjectModel).where(AppProjectModel.id == project_id)
+        await session.execute(deleted_app_project)
         await session.commit()
-        return True

@@ -8,6 +8,8 @@ services:
       - /var/run:/var/run:ro
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - observability
 
   prometheus:
     image: prom/prometheus:latest
@@ -28,3 +30,7 @@ services:
     volumes:
       - ./dashboards/:/var/lib/grafana/dashboards/:ro
       - ./provisioning/:/etc/grafana/provisioning/:ro
+
+networks:
+  observability:
+    external: true
