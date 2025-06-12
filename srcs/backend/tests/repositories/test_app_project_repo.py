@@ -2,7 +2,7 @@ import os
 import pytest
 import conftest
 
-from unittest.mock import patch, MagicMock, AsyncMock
+from unittest.mock import patch, MagicMock
 
 from src.repositories import AppProjectRepo
 from src.models import AppProjectModel
@@ -78,6 +78,44 @@ async def test_REAL_create_project(session):
     # PROCEDURE
     created_project = await AppProjectRepo.create_project(session, random_app_project)
     _assert_create_project(created_project, random_app_project)
+
+    # CLEAN-UP
+    await AppProjectRepo.delete_project(session, created_project.id)
+
+def _assert_get_project(retrieved_project, random_app_project):
+    assert isinstance(retrieved_project, AppProjectModel)
+    assert retrieved_project.name == random_app_project.name
+    assert retrieved_project.description == random_app_project.description
+    assert retrieved_project.skills == random_app_project.skills
+    assert retrieved_project.repo == random_app_project.repo
+    assert retrieved_project.id is not None
+    assert retrieved_project.id > 0
+    assert retrieved_project.id == random_app_project.id if hasattr(random_app_project, 'id') else True
+
+@pytest.mark.asyncio(loop_scope="session")
+async def test_MOCK_get_project(mock_session):
+    # REQUISITES
+    random_app_project = conftest.create_random_app_project()
+    random_id = int.from_bytes(os.urandom(2), 'big')  # Mock ID
+    random_app_project.id = random_id
+
+    # SETUP MOCK
+    mock_session.get.return_value = random_app_project
+
+    # PROCEDURE
+    retrieved_project = await AppProjectRepo.get_project(mock_session, random_id)
+    _assert_get_project(retrieved_project, random_app_project)
+
+
+@pytest.mark.asyncio(loop_scope="session")
+async def test_REAL_get_project(session):
+    # REQUISITES
+    random_app_project = conftest.create_random_app_project()
+    created_project = await AppProjectRepo.create_project(session, random_app_project)
+
+    # PROCEDURE
+    retrieved_project = await AppProjectRepo.get_project(session, created_project.id)
+    _assert_get_project(retrieved_project, created_project)
 
     # CLEAN-UP
     await AppProjectRepo.delete_project(session, created_project.id)
