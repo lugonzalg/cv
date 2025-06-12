@@ -6,6 +6,10 @@ from src.models import AppProjectModel
 class AppProjectRepo:
     """Repository with static CRUD operations for :class:`Project`."""
 
+    def model_factory(*args, **kwargs) -> AppProjectModel:
+        """Create a new instance of AppProjectModel with given attributes."""
+        return AppProjectModel(**kwargs)
+
     @staticmethod
     async def list_projects(session: AsyncSession):
         result = await session.execute(select(AppProjectModel))

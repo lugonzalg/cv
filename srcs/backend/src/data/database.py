@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import (
     AsyncEngine,
 )
 
-from typing import Optional, Any
+from typing import Optional, Any, AsyncGenerator
 from pydantic_core import MultiHostUrl
 from src.models import Base
 
@@ -39,11 +39,6 @@ class Database:
 
     @classmethod
     @asynccontextmanager
-    async def session(cls) -> AsyncSession:
+    async def session(cls) -> AsyncGenerator[... ,AsyncSession]:
         async with cls.SessionLocal() as session:
-            yield session
-
-    @classmethod
-    async def get_session(cls) -> AsyncSession:
-        async with cls.session() as session:
             yield session
