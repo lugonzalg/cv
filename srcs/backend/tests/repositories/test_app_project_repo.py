@@ -119,3 +119,18 @@ async def test_REAL_get_project(session):
 
     # CLEAN-UP
     await AppProjectRepo.delete_project(session, created_project.id)
+
+@pytest.mark.asyncio(loop_scope="session")
+async def test_REAL_delete_project(session):
+    # REQUISITES
+    random_app_project = conftest.create_random_app_project()
+    created_project = await AppProjectRepo.create_project(session, random_app_project)
+
+    # PROCEDURE
+    await AppProjectRepo.delete_project(session, created_project.id)
+
+    retrieved_project = await AppProjectRepo.get_project(session, created_project.id)
+    assert retrieved_project is None
+
+    # CLEAN-UP
+    await AppProjectRepo.delete_project(session, created_project.id)
