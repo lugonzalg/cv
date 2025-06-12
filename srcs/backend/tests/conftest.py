@@ -1,10 +1,11 @@
+import pytest
 import pytest_asyncio
 
 from src.data import Database
 from src.settings import AppSettings
-from src.models import AppProjectModel
 from src.repositories import AppProjectRepo
 import os
+from unittest.mock import AsyncMock
 
 @pytest_asyncio.fixture(scope="session", autouse=True)
 async def setup_database():
@@ -14,6 +15,9 @@ async def setup_database():
         settings.DB_URL,
     )
 
+@pytest.fixture(scope="session")
+def mock_session():
+    yield AsyncMock()
 
 @pytest_asyncio.fixture(scope="session")
 async def session():
