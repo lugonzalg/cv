@@ -5,7 +5,7 @@ from src.data import Database
 from src.settings import AppSettings
 from src.repositories import AppProjectRepo
 import os
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, MagicMock
 
 @pytest_asyncio.fixture(scope="session", autouse=True)
 async def setup_database():
@@ -17,7 +17,9 @@ async def setup_database():
 
 @pytest.fixture(scope="session")
 def mock_session():
-    yield AsyncMock()
+    mock_session = AsyncMock()
+    mock_session.add = MagicMock()
+    yield mock_session
 
 @pytest_asyncio.fixture(scope="session")
 async def session():

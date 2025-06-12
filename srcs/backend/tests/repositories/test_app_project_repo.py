@@ -1,3 +1,4 @@
+import os
 import pytest
 import conftest
 
@@ -54,10 +55,11 @@ async def test_MOCK_create_project(mock_session):
     # REQUISITES
     random_app_project = conftest.create_random_app_project()
 
-    # SETUP MOCK - make async methods return coroutines
-    mock_session.add.return_value = None
-    mock_session.commit = AsyncMock()
-    mock_session.refresh = AsyncMock()
+    # SETUP MOCK - simulate refresh setting an ID
+    async def mock_refresh(project):
+        project.id = int.from_bytes(os.urandom(2), 'big')
+    
+    mock_session.refresh.side_effect = mock_refresh
 
     # PROCEDURE
     created_project = await AppProjectRepo.create_project(mock_session, random_app_project)
@@ -75,13 +77,7 @@ async def test_REAL_create_project(session):
 
     # PROCEDURE
     created_project = await AppProjectRepo.create_project(session, random_app_project)
-
-    # ASSERTIONS
-    assert isinstance(created_project, AppProjectModel)
-    assert created_project.name == random_app_project.name
-    assert created_project.description == random_app_project.description
-    assert created_project.skills == random_app_project.skills
-    assert created_project.repo == random_app_project.repo
+    _assert_create_project(created_project, random_app_project)
 
     # CLEAN-UP
     await AppProjectRepo.delete_project(session, created_project.id)
